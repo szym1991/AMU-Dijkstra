@@ -10,26 +10,17 @@ namespace DijkstraConsoleApp
     {
         static void Main(string[] args)
         {
-            Graph g = new Graph();
-            List<Vertex> vert = new List<Vertex>();
-            
-            vert.Add(new Vertex("0"));
-            vert.Add(new Vertex("1"));
-            vert.Add(new Vertex("2"));
-            vert.Add(new Vertex("3"));
-            vert.Add(new Vertex("4"));
-            vert.Add(new Vertex("5"));
-            g.addEdge(new Edge(vert[0], vert[1], 7));
-            g.addEdge(new Edge(vert[0], vert[2], 9));
-            g.addEdge(new Edge(vert[0], vert[5], 14));
-            g.addEdge(new Edge(vert[1], vert[2], 10));
-            g.addEdge(new Edge(vert[1], vert[3], 15));
-            g.addEdge(new Edge(vert[2], vert[3], 11));
-            g.addEdge(new Edge(vert[2], vert[5], 2));
-            g.addEdge(new Edge(vert[3], vert[4], 6));
-            g.addEdge(new Edge(vert[4], vert[5], 9));
+            Graph g;
+            Console.WriteLine("Algorytm Dijkstry");
+            if (args.Length > 0)
+            {
+                g = readFromFile(args[0]);
+            }
+            else
+            {
+                g = readFromKeyboard();
+            } 
 
-            g.setSource(vert[0]);
 
             Dijkstra d = new Dijkstra(g);
             d.find();
@@ -40,6 +31,103 @@ namespace DijkstraConsoleApp
             }
 
             System.Console.ReadKey();
+        }
+
+        static Graph readFromKeyboard()
+        {
+            Graph g = new Graph();
+            List<Vertex> vert = new List<Vertex>();
+
+            System.Console.Out.WriteLine("Podaj nazwy wierzchołków.");
+            bool stop = false;
+            while (stop == false)
+            {
+                string line = Console.ReadLine();
+                if (line == "koniec")
+                {
+                    stop = true;
+                }
+                else
+                {
+                    vert.Add(new Vertex(line));
+                }
+            }
+
+            System.Console.Out.WriteLine("Podaj krawędzi w grafie. Najpierw podaj nazwy dwóch wierzchołków połączonych krawędzią, następnie wage krawędzi.");
+            System.Console.Out.WriteLine("Przykład: start koniec 5");
+            stop = false;
+            while (stop == false)
+            {
+                string line = Console.ReadLine();
+                if (line == "koniec")
+                {
+                    stop = true;
+                }
+                else
+                {
+                    string[] input = readLine(line);
+                    Vertex v = vert.Find(x => x.name == input[0]);
+                    Vertex u = vert.Find(x => x.name == input[1]);
+                    g.addEdge(new Edge(v, u, Int32.Parse(input[2])));
+                }
+            }
+
+            System.Console.Out.WriteLine("Podaj nazwę wierzchołka, który będzie źródłem");
+            string source = Console.ReadLine();
+            Vertex w = vert.Find(x => x.name == source);
+            g.setSource(w);
+
+            return g;
+        }
+
+        static Graph readFromFile(string filename)
+        {
+            Graph g = new Graph();
+            List<Vertex> vert = new List<Vertex>();
+
+            string[] lines = System.IO.File.ReadAllLines(filename);
+            int i = 0;
+            bool stop = false;
+            while (stop == false)
+            {
+                string line = lines[i++];
+                if (line == "koniec")
+                {
+                    stop = true;
+                }
+                else
+                {
+                    vert.Add(new Vertex(line));
+                }
+            }
+
+            stop = false;
+            while (stop == false)
+            {
+                string line = lines[i++];
+                if (line == "koniec")
+                {
+                    stop = true;
+                }
+                else
+                {
+                    string[] input = readLine(line);
+                    Vertex v = vert.Find(x => x.name == input[0]);
+                    Vertex u = vert.Find(x => x.name == input[1]);
+                    g.addEdge(new Edge(v, u, Int32.Parse(input[2])));
+                }
+            }
+
+            Vertex w = vert.Find(x => x.name == lines[i]);
+            g.setSource(w);
+            return g;
+        }
+
+        static string[] readLine(string line)
+        {
+            string[] stringSeparators = new string[] { " " };
+            string[] result = line.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+            return result;
         }
     }
 }
