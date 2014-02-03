@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DijkstraConsoleApp
 {
+    // Klasa implementujaca Graf
     class Graph
     {
         public List<Vertex> vertices { get; set; }
@@ -17,6 +18,8 @@ namespace DijkstraConsoleApp
             edges = new List<Edge>();
         }
 
+        // dodawanie krawedzi do grafu
+        // jeśli wierzcholki nie wystepuja w grafie to rowniez zostaja dodane do listy wierzcholkow
         public void addEdge(Edge e)
         {
             edges.Add(e);
@@ -37,22 +40,26 @@ namespace DijkstraConsoleApp
                 vertices.Add(e.v_end);
         }
 
+        // dodawanie wierzcholka
         public void addVertex(Vertex v)
         {
             vertices.Add(v);
         }
 
+        // wskazanie wierzcholka jako zrodla (od niego liczone beda sciezki w Algorytmie Dijkstry)
         public void setSource(Vertex n)
         {
             Vertex s = vertices.Find(x => x == n);
             s.distFromSrc = 0;
         }
 
+        // zwracanie wierzcholka-zrodla
         public Vertex getSource()
         {
             return vertices.Find(x => x.distFromSrc == 0);
         }
 
+        // zwrocenie listy wierzchokow, ktore sa polaczone krawedzia z wierzcholkiem podanym w parametrze
         public List<Vertex> getNeightbours(Vertex x)
         {
             List<Vertex> result = new List<Vertex>();
@@ -66,6 +73,7 @@ namespace DijkstraConsoleApp
             return result;
         }
 
+        // zwrocenie wagi krawedzi miedzy ktora sa polaczone wierzcholki
         public int getWeight(Vertex v, Vertex u)
         {
             Edge w = edges.Find(e => e.v_start == v && e.v_end == u ||

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DijkstraConsoleApp
 {
+    // Klasa implementujaca wierzcholki w grafie
     class Vertex : IComparable<Vertex>
     {
         public string name { get; set; }

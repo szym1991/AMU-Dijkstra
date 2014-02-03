@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DijkstraConsoleApp
 {
+    // Klasa implementujaca kolejke priorytetowa
     class PriorityQueue<T> where T : IComparable<T>
     {
         public List<T> data;

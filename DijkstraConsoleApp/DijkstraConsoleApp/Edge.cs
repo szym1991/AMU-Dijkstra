@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DijkstraConsoleApp
 {
+    // Klasa implementujaca krawedz w grafie
     class Edge
     {
         public Vertex v_start { get; set; }
